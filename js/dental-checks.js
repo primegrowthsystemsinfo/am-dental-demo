@@ -24,14 +24,14 @@
   // placeholders(document) -> { count, titles: ["Whitening: sample case", ...] }
   function placeholders(doc) {
     var titles = [];
-    // A case still needs replacing while it is flagged as demonstration content (data-case-demo for the AI-generated
+    // A case still needs replacing while it is flagged as demonstration content (data-case-demo for the sample
     // demonstrations, data-case-placeholder for placeholder graphics), or while it still shows a demonstration image
-    // (images/ai-demo-* or images/smile-gallery/placeholder-*), even if the flag was deleted.
+    // (images/smile-case-* or images/smile-gallery/placeholder-*), even if the flag was deleted.
     each(doc.querySelectorAll("[data-case]"), function (c) {
       var flagged = c.hasAttribute("data-case-demo") || c.hasAttribute("data-case-placeholder"), img = false;
       each(c.querySelectorAll("img"), function (i) {
         var s = (i.getAttribute("src") || "") + " " + (i.getAttribute("srcset") || "");
-        if (/(^|[\/\s])(placeholder-|ai-demo-)[\w-]*\.(svg|png|jpe?g|webp|avif)/i.test(s)) img = true;
+        if (/(^|[\/\s])(placeholder-|smile-case-)[\w-]*\.(svg|png|jpe?g|webp|avif)/i.test(s)) img = true;
       });
       if (!flagged && !img) return;
       var t = c.querySelector(".case-title, h2, h3");
@@ -91,8 +91,8 @@
     var gallery = reports.filter(function (r) { return r.page === "smile-gallery.html"; })[0];
     if (!gallery) add("review", "Smile Gallery", "Could not open smile-gallery.html to look for placeholder cases.", "site/smile-gallery.html");
     else if (gallery.placeholders.count) {
-      add("fix", "Smile Gallery", gallery.placeholders.count + " gallery case" + (gallery.placeholders.count > 1 ? "s are" : " is") + " still demonstration content: AI-generated simulations or placeholders, not patients or treatment results (" + gallery.placeholders.titles.join("; ") + "). Before the gallery can be published as your practice's results, replace each with authentic photos of your own patients, used with their written authorisation, or delete the case. The page shows a warning banner until none is left.", "site/smile-gallery.html → data-case-demo / data-case-placeholder");
-    } else add("ok", "Smile Gallery", "No AI demonstration cases or placeholders are left in the Smile Gallery.", "");
+      add("fix", "Smile Gallery", gallery.placeholders.count + " gallery case" + (gallery.placeholders.count > 1 ? "s are" : " is") + " still demonstration content: sample images or placeholders, not patients or treatment results (" + gallery.placeholders.titles.join("; ") + "). Before the gallery can be published as your practice's results, replace each with authentic photos of your own patients, used with their written authorisation, or delete the case. The page shows a warning banner until none is left.", "site/smile-gallery.html → data-case-demo / data-case-placeholder");
+    } else add("ok", "Smile Gallery", "No sample cases or placeholders are left in the Smile Gallery.", "");
     // The same label on several pages (the footer notice) is reported once, with every page it is on.
     var byText = {}, order = [];
     reports.forEach(function (r) {
